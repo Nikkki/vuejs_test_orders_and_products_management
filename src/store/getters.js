@@ -1,0 +1,27 @@
+//GETTERS
+export default {
+    getOrders: state => {
+        return state.orders;
+    },
+    //возвращает объект, в котором название свойства - это id прихода, 
+    //а значение - массив с продуктами 
+    getOrderProducts: state => {
+        let order_products = {};
+        state.orders.forEach(order => {
+            order_products[order.id] = [];
+        });
+        
+        state.products.forEach(product => {
+            if(order_products[product.order]){
+                order_products[product.order].push(product);
+            }
+
+        });
+        console.log(order_products);
+        return order_products;
+    },
+    // возвращает объект прихода по id 
+    getOrder: state => (order_id) =>{
+        return state.orders.find(order => order.id === order_id)
+    }
+}

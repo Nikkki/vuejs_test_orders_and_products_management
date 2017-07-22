@@ -1,3 +1,7 @@
 <template>
-    <p> Products</p>
+     <main class="products">
+        <div v-for="product in products">
+
+        </div>
+     </main>
 </template>

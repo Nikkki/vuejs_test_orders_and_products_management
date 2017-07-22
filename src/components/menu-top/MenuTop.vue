@@ -50,7 +50,7 @@
 		display: block;
 		background-color: #fff;
 		box-shadow: 0 5px 25px rgba(222,227,231,.8);
-		z-index: 10;
+		z-index: 21;
 
 		display: flex;
 		

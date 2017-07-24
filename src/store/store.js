@@ -57,7 +57,7 @@ export const store = new Vuex.Store({
                 serialNumber: 1234,
                 isNew: 1,
                 photo: 'pathToFile.jpg',
-                title: 'Product 1',
+                title: 'Product ProductProductProductProduct ProductProduct Product Product1',
                 type: 'Monitors',
                 specification: 'Specification 1',
                 isWork: 'under_repair',

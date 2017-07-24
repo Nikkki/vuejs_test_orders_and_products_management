@@ -35,43 +35,29 @@
                 <span class="orders__add">&#43;</span>
                 <span class="orders__amount">Приходы / {{ amountOfOrders }}</span>
             </div>
-
-
+    
             <div class="b-order-product">
-                <div v-if="showOrderProductsBoolean" class="order-products">
-                    <button class="close-btn">
-                        <icon name="close"></icon>
-                    </button>
-                    <header>
-                        <h3 class="header__title">Test text</h3>
-
-                        <div class="header__add-product">
-                            <span class="header__add-sign">&#43;</span>
-                            <i class="header__add-text">Добавить продукт</i>
-                        </div>
-                    </header>
-                    <!--/////HEADER END///////  -->
-                    <app-order-products v-for="product in this.selected_order" v-bind:key="product.id" @closeBtn="closeProductsBtn" 
-                        :productName=product.title  :productSpecification=product.specification>
-                    </app-order-products>
-                </div>
-        
-                <transition-group name="slide-fade2" tag="div">
+                                
+            <!-- 
+                Список приходов 
+                -->
+                
+                <transition-group name="slide-fade2" tag="div"> <!-- Анимация списка заказов --> 
                     <div class="order__item" v-for="order in orders" v-bind:key="order.id">
-        
+    
                         <transition name="slide-fade">
                             <span v-if="!showOrderProductsBoolean" class="order-item__title"> {{ order.title }} </span>
                         </transition>
-        
+    
                         <span class="order-item__prod-btn" @click="showOrderProducts(order)">
                             <icon name="list-ul"></icon>
                         </span>
-        
+    
                         <span class="order-item-amount">
                             <span class="order-item-amount__amount"> {{ getOrderProducts[order.id].length }} </span>
                             <span class="order-item-amount__name"> {{ correctCase(correctCase_product, getOrderProducts[order.id].length) }} </span>
                         </span>
-        
+    
                         <span class="order__date">
                             <span class="order__date_short"> {{ getDate(order.date) }} / {{getMonth(order.date)}} </span>
                             <span class="order__date_long"> {{ getDate(order.date) }} / {{getMonthName(order.date)}} / {{getYear(order.date)}}</span>
@@ -91,11 +77,52 @@
                                 <icon name="trash"></icon>
                             </span>
                         </transition>
-        
+
+                        <transition name="order-active-arrow">
+                            <span class="orders__active-arrow" v-if="showOrderProductsBoolean">
+                                <icon name="chevron-right"></icon>
+                            </span>
+                        </transition>
+    
                     </div>
                 </transition-group>
-            </div>
+                <!-- КОНЕЦ Список приходов -->
 
+                <!-- 
+                    Список продуктов 
+                    -->
+                <transition name="slide-products">
+                    <div v-if="showOrderProductsBoolean" class="order-products">
+                        <!-- 
+                            Header списка продуктов  
+                            -->
+                        <button class="close-btn" @click="closeProductsBtn">
+                            <icon name="close"></icon>
+                        </button>
+                        <header>
+                            <h3 class="header__title">{{ this.selected_order.title }}</h3>
+        
+                            <div class="header__add-product">
+                                <span class="header__add-sign">&#43;</span>
+                                <i class="header__add-text">Добавить продукт</i>
+                            </div>
+                        </header>
+                        <!-- КОНЕЦ Header списка продуктов    -->
+                        
+                        
+                        <app-order-products v-for="product in this.selected_order_with_products" v-bind:key="product.id"
+                        @closeBtn="closeProductsBtn" 
+                        v-bind:productName="product.title" 
+                        v-bind:productSpecification="product.specification"
+                        v-bind:isWork="product.isWork"
+                        >
+                        </app-order-products>
+                    </div>
+                </transition>
+                
+                    <!-- Список продуктов КОНЕЦ-->
+            </div>
+    
         </main>
     </div>
 </template>
@@ -110,6 +137,8 @@ import OrderProducts from './OrderProducts.vue';
 import 'vue-awesome/icons/list-ul';
 import 'vue-awesome/icons/trash';
 import 'vue-awesome/icons/close';
+import 'vue-awesome/icons/chevron-right';
+
 
 
 export default {
@@ -121,13 +150,11 @@ export default {
             order_id: 0,
             showModal: false,
             showOrderProductsBoolean: false,
-            selected_order: {}
+            selected_order: {},
+            selected_order_with_products: {}
         }
     },
     methods: {
-        consolE() {
-            console.log('closeBtn');
-        },
         getDate(date) {
             var d = new Date(date);
             return d.getDate();
@@ -163,7 +190,7 @@ export default {
         },
 
         closeProductsBtn() {
-            console.log('close');
+            this.showOrderProductsBoolean = false;
         },
 
         // Правильный падеж
@@ -191,14 +218,14 @@ export default {
         showOrderProducts(order) {
             let orderProducts = this.getOrderProducts,
                 id = order.id;
-
+            this.order_id = id;
             if (!this.showOrderProductsBoolean) {
                 // меняем эту переменную, чтобы блок с прихода сузился
                 this.showOrderProductsBoolean = true;
             }
             if (orderProducts[id]) {
-                this.selected_order = orderProducts[id];
-                console.log(this.selected_order[0]);
+                this.selected_order = order;
+                this.selected_order_with_products = orderProducts[id];
                 return orderProducts[id];
             }
         },
@@ -215,6 +242,9 @@ export default {
         }
     },
     watch: {
+        order_id: function(value){
+            console.log(value);
+        },
         showOrderProductsBoolean: function (value) {
             let order_items = document.getElementsByClassName("order__item");
             //setTimeout нужен для анимации
@@ -242,8 +272,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 .orders {
     display: block;
     margin: 58px 0 0 263px;
@@ -286,12 +314,13 @@ export default {
 
 
 
-.b-order-product{
+.b-order-product {
     display: flex;
-    flex-direction: row-reverse;
-    width: 940px;   
+    flex-direction: row;
+    width: 940px;
     align-items: baseline;
 }
+
 
 /*----Order styles----*/
 
@@ -399,8 +428,31 @@ export default {
     cursor: pointer;
 }
 
+.orders__active-arrow{
+    position: absolute;
+    color: #fff;
+    height: 70px;
+    width: 40px;
+    right: 0px;
+    line-height: 75px;
+    text-align: center;
+    background-color: #cfd8dc;
+}
 
-
+.order-active-arrow-enter-active{
+    transition: all .3s ease-out .45s;
+}
+.order-active-arrow-leave-active{
+    transition: all .3s ease-out;
+}
+.order-active-arrow-leave,
+.order-active-arrow-enter-to{
+    right: 0;
+}
+.order-active-arrow-leave-to,
+.order-active-arrow-enter{
+    right: -40px;
+}
 
 
 
@@ -434,6 +486,7 @@ export default {
 
 
 
+
 /*END  Animation order`s info */
 
 
@@ -453,12 +506,12 @@ export default {
 
 
 
-
 /* Animation of order deleting END */
 
 
 /*  ---------PRODUCTS-----  */
-.order-products{
+
+.order-products {
     top: 6px;
     width: 600px;
     display: inline-block;
@@ -467,6 +520,7 @@ export default {
     border: 1px solid #dfe3e6;
     position: relative;
 }
+
 .close-btn {
     outline: 0;
     height: 30px;
@@ -508,6 +562,14 @@ header {
     font: 12px Arial, sans-serif;
 }
 
+/*  ------END---PRODUCTS-----  */
+.slide-products-enter-active{
+    transition: all .3s ease-out .3s;
+    display: none;
+}
+/*  */
+.slide-products-leave {
+    display: none;
+}
 
-/*  ------RND---PRODUCTS-----  */
 </style>

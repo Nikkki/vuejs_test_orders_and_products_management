@@ -17,7 +17,6 @@ export default {
             }
 
         });
-        console.log(order_products);
         return order_products;
     },
     // возвращает объект прихода по id 

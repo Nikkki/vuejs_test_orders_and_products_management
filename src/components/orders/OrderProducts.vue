@@ -1,28 +1,29 @@
 <template>
     <!--fa-times  -->
     <div class="order-product">
-        
-            <span class="product__is-work-sign">
-                <slot name="is-work-sign"></slot>
+        <!-- В это длинном :class мы определяем статус работы продукта, 
+        и вставляем соответсвующий класс, который отвечает за цвет -->
+        <span class="product__is-work-sign" :class="isWorkClass(watch_work_status)">
+            <icon name="circle"></icon>
+        </span>
+        <span class="product__img">
+            <slot name="product-img"></slot>
+        </span>
+        <div class="product-title">
+            <span class="product__name">
+                {{productName}}
             </span>
-            <span class="product__img">
-                <slot name="product-img"></slot>
+            <span class="product__specification">
+                {{productSpecification}}
             </span>
-            <div class="product-title">
-                <span class="product__name">
-                    {{productName}}
-                </span>
-                <span class="product__specification">
-                    {{productSpecification}}
-                </span>
-            </div>
+        </div>
     
-            <span class="product__is-work-name">
-                <slot name="is-work-name"></slot>
-            </span>
-            <button class="trash-btn">
-                <icon name="trash"></icon>
-            </button>
+        <span class="product__is-work-name" :class="isWorkClass(watch_work_status)">
+            {{ workName(watch_work_status) }}
+        </span>
+        <button class="trash-btn">
+            <icon name="trash"></icon>
+        </button>
     </div>
 </template>
 
@@ -31,20 +32,60 @@
 import Icon from 'vue-awesome/components/Icon.vue';
 
 import 'vue-awesome/icons/trash';
+import 'vue-awesome/icons/circle';
+
 export default {
-    data: function(){
+    data: function () {
         return {
-            closeBtnData: ''
+            work_status: {
+                is_work: {
+                    className: 'is_work',
+                    name: 'В работе'
+                },
+                is_free: {
+                    className: 'is_free',
+                    name: 'Свободен'
+                },
+                under_repair: {
+                    className: 'under_repair',
+                    name: 'В ремонте'
+                },
+                unknown: {
+                    className: 'unknown',
+                    name: 'Неизвестно'
+                }
+            },
+            watch_work_status: this.$props.isWork
         }
     },
     methods: {
-        closeBtn: function() {
-            this.$emit('closeBtn', this.closeBtnData);
+        isWorkClass(work_status) {
+            if (work_status === 'free') {
+                return this.work_status.is_free.className;
+            } else if (work_status === 'under_repair') {
+                return this.work_status.under_repair.className;
+            } else if (work_status === 'is_work') {
+                return this.work_status.is_work.className;
+            } else {
+                return this.work_status.unknown.className;
+            }
+        },
+        workName(work_status){
+            if (work_status === 'free') {
+                return this.work_status.is_free.name;
+            } else if (work_status === 'under_repair') {
+                return this.work_status.under_repair.name;
+            } else if (work_status === 'is_work') {
+                return this.work_status.is_work.name;
+            } else {
+                return this.work_status.unknown.name;
+            }
         }
     },
-    props:[
+    props: [
         'productName',
-        'productSpecification'
+        'productSpecification',
+        'isWork'
     ],
     components: {
         'icon': Icon
@@ -54,57 +95,76 @@ export default {
 
 <style scoped>
 .order-product {
-    
     width: 545px;
     display: flex;
     align-items: center;
-    
     background-color: #fff;
     border-top: 1px solid #dfe3e6;
     position: relative;
-    padding: 5px 30px 5px 25px;
+    padding: 7px 30px 7px 25px;
 }
 
 .order-product:hover {
-
     z-index: 5;
+    transform: translateY(-2px);
     box-shadow: 10px 10px 30px 5px rgba(222, 227, 231, .7);
+     transition: all .2s ease-out;
 }
 
-.order-product:last-child{
+.order-product:last-child {
     border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;    
+    border-bottom-left-radius: 5px;
 }
 
-.product__is-work-sign{
-    margin-left: 28px;
+.product__is-work-sign {
+    margin-left: 11px;
     width: 6px;
 }
-.product__img{
+
+.product__img {
     margin-left: 18px;
     width: 39px;
 }
-.product-title{
-    margin-left: 16px;
+
+.product-title {
+    margin-left: 10px;
     width: 304px;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
-    font: 15px Arial,sans-serif;
+    font: 15px Arial, sans-serif;
 }
-.product__name{
+
+.product__name {
     color: #2c3c44;
+    margin-bottom: 3px;
     text-decoration: underline;
 }
-.product__specification{
+
+.product__specification {
     color: #99abb4;
+    font-size: 14px;
 }
-.product__is-work-name{
+
+.product__is-work-name {
     margin-left: 14px;
-    width: 89px;
+    width: 100px;
 }
-.trash-btn{
-    margin-left: 52px;
+
+.is_work {
+    color: #409e11;
+}
+.is_free{
+    color: #cddc39;
+}
+.under_repair{
+    color: #2f3f47;
+}
+.unknown{
+    color: #e0143f;
+}
+ .trash-btn {
+    margin-left: 25px;
     width: 10px;
     color: #90a4ae;
     background-color: #fff;

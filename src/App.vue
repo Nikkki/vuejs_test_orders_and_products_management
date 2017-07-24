@@ -38,10 +38,12 @@ export default {
     html {
         height: 100%;
         width: 100%;
+        background-color: #eff3f6;
     }
     body{
         margin: 0;
         height: 100%;
+
     }
     #app {
     margin: 0;

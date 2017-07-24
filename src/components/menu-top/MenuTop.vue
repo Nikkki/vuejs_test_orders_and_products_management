@@ -77,14 +77,14 @@
 	.menu-top_search input{
 		max-width: 412px;
 		min-width: 300px;
-		height: 30px;
+		height: 24px;
 		background-color: #F0F3F5;
 		border-radius: 5px;
 		color: #000;
 		font: 12px Arial, sans-serif;
 		font-weight: bold;	
 		display: flex;
-		padding-left:13px; 
+		padding-left: 13px; 
 		margin-left: -200px;
 
 		-webkit-box-shadow: inset 0px 7px 3px -6px rgba(222,227,231,1);
@@ -104,14 +104,12 @@
 	.menu-top_search input::-moz-input-placeholder{
 		color: #000;
 	}
-	
 
 	.menu-top .clock{
 		font: 12px Arial, sans-serif;
 		font-weight: bold;
 		display: block;
 		float: right;
-		
 	}
 
 </style>

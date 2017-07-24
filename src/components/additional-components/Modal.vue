@@ -112,6 +112,7 @@ export default {
         border-radius: 40px;
         font-weight: bold;
         transition: all .25s ease-out;
+        outline: 0;
         
     }
     .modal-default-button:hover{
@@ -119,18 +120,12 @@ export default {
         color: #e8364f;
         box-shadow: 5px 5px 12px rgba(126,128,128,.8);
     }
-    .modal-default-button:active{
-        outline: 0;
-    }
 
 
     /*
     * The following styles are auto-applied to elements with
     * transition="modal" when their visibility is toggled
     * by Vue.js.
-    *
-    * You can easily play with the modal transition by editing
-    * these styles.
     */
 
     .modal-enter {

@@ -1,5 +1,3 @@
-# vuex-basics
-
 > A Vue.js project
 
 ## Build Setup

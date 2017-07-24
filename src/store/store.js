@@ -40,6 +40,7 @@ export const store = new Vuex.Store({
                 title: 'Product 1',
                 type: 'Monitors',
                 specification: 'Specification 1',
+                isWork: 'under_repair',
                 guarantee: {
                     start: '2017-06-29 12:09:33',
                     end: '2017-06-29 12:09:33'
@@ -59,6 +60,7 @@ export const store = new Vuex.Store({
                 title: 'Product 1',
                 type: 'Monitors',
                 specification: 'Specification 1',
+                isWork: 'under_repair',
                 guarantee: {
                     start: '2017-06-29 12:09:33',
                     end: '2017-06-29 12:09:33'
@@ -78,6 +80,7 @@ export const store = new Vuex.Store({
                 title: 'Product 1',
                 type: 'Monitors',
                 specification: 'Specification 1',
+                isWork: 'free',
                 guarantee: {
                     start: '2017-06-29 12:09:33',
                     end: '2017-06-29 12:09:33'
@@ -96,7 +99,8 @@ export const store = new Vuex.Store({
                 photo: 'pathToFile.jpg',
                 title: 'Product 1',
                 type: 'Monitors',
-                specification: 'Specification 1',
+                specification: 'Specification 4',
+                isWork: 'under_repair',
                 guarantee: {
                     start: '2017-06-29 12:09:33',
                     end: '2017-06-29 12:09:33'
@@ -116,6 +120,27 @@ export const store = new Vuex.Store({
                 title: 'Product 1',
                 type: 'Monitors',
                 specification: 'Specification 1',
+                isWork: 'free',
+                guarantee: {
+                    start: '2017-06-29 12:09:33',
+                    end: '2017-06-29 12:09:33'
+                },
+                price: [
+                    { value: 100, symbol: 'USD', isDefault: 0 },
+                    { value: 2600, symbol: 'UAH', isDefault: 1 }
+                ],
+                order: 2,
+                date: '2017-06-29 12:09:33'
+            },
+            {
+                id: 5,
+                serialNumber: 1234,
+                isNew: 1,
+                photo: 'pathToFile.jpg',
+                title: 'Product 1',
+                type: 'Monitors',
+                specification: 'Specification 1',
+                isWork: 'free',
                 guarantee: {
                     start: '2017-06-29 12:09:33',
                     end: '2017-06-29 12:09:33'

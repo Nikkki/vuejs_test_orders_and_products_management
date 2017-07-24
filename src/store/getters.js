@@ -5,7 +5,7 @@ export default {
     },
     //возвращает объект, в котором название свойства - это id прихода, 
     //а значение - массив с продуктами 
-    getOrderProducts: state => {
+    getOrdersProductsObj: state => {
         let order_products = {};
         state.orders.forEach(order => {
             order_products[order.id] = [];
@@ -24,4 +24,5 @@ export default {
     getOrder: state => (order_id) =>{
         return state.orders.find(order => order.id === order_id)
     }
+    
 }

@@ -156,20 +156,16 @@ export default {
     },
     methods: {
         getDate(date) {
-            var d = new Date(date);
-            return d.getDate();
+            return new Date(date).getDate();
         },
         getMonth(date) {
-            var d = new Date(date);
-            return d.getMonth() + 1;
+            return new Date(date).getMonth() + 1;
         },
         getMonthName(date) {
-            var d = new Date();
             return this.month_arr[this.getMonth(date)];
         },
         getYear(date) {
-            var d = new Date(date);
-            return d.getYear() + 1900;
+            return new Date(date).getYear() + 1900;
         },
         //  подсчет стоимости всех продуктов 
         getOrderCost(order_id, symbol) {
@@ -208,7 +204,11 @@ export default {
         //-------EVENTS---------
         deleteOrderAsync(order) {
             this.$store.dispatch('deleteOrder', order.id);
+            this.deleteProductByOrderId(order.id);
             this.showModal = false;
+        },
+        deleteProductByOrderId(order_id){
+            this.$store.dispatch('deleteProductsByOrderId',order_id);
         },
         clickDeleteBtn(order) {
             this.selected_order = order;
@@ -242,9 +242,6 @@ export default {
         }
     },
     watch: {
-        order_id: function(value){
-            console.log(value);
-        },
         showOrderProductsBoolean: function (value) {
             let order_items = document.getElementsByClassName("order__item");
             //setTimeout нужен для анимации

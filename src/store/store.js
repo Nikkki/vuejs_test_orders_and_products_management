@@ -57,13 +57,13 @@ export const store = new Vuex.Store({
                 serialNumber: 1234,
                 isNew: 1,
                 photo: 'pathToFile.jpg',
-                title: 'Product ProductProductProductProduct ProductProduct Product Product1',
+                title: 'Product 2',
                 type: 'Monitors',
                 specification: 'Specification 1',
                 isWork: 'under_repair',
                 guarantee: {
                     start: '2017-06-29 12:09:33',
-                    end: '2017-06-29 12:09:33'
+                    end: '2019-06-29 12:09:33'
                 },
                 price: [
                     { value: 100, symbol: 'USD', isDefault: 0 },
@@ -75,15 +75,15 @@ export const store = new Vuex.Store({
             {
                 id: 3,
                 serialNumber: 1234,
-                isNew: 1,
+                isNew: 0,
                 photo: 'pathToFile.jpg',
-                title: 'Product 1',
-                type: 'Monitors',
+                title: 'Product 3',
+                type: 'Comp',
                 specification: 'Specification 1',
                 isWork: 'free',
                 guarantee: {
                     start: '2017-06-29 12:09:33',
-                    end: '2017-06-29 12:09:33'
+                    end: '2020-06-29 12:09:33'
                 },
                 price: [
                     { value: 100, symbol: 'USD', isDefault: 0 },
@@ -97,7 +97,7 @@ export const store = new Vuex.Store({
                 serialNumber: 1234,
                 isNew: 1,
                 photo: 'pathToFile.jpg',
-                title: 'Product 1',
+                title: 'Product 4',
                 type: 'Monitors',
                 specification: 'Specification 4',
                 isWork: 'under_repair',
@@ -117,7 +117,7 @@ export const store = new Vuex.Store({
                 serialNumber: 1234,
                 isNew: 1,
                 photo: 'pathToFile.jpg',
-                title: 'Product 1',
+                title: 'Product 5',
                 type: 'Monitors',
                 specification: 'Specification 1',
                 isWork: 'free',

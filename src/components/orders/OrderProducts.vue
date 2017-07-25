@@ -37,6 +37,7 @@ import 'vue-awesome/icons/circle';
 export default {
     data: function () {
         return {
+
             work_status: {
                 is_work: {
                     className: 'is_work',

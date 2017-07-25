@@ -22,6 +22,11 @@ export default {
     // возвращает объект прихода по id 
     getOrder: state => (order_id) =>{
         return state.orders.find(order => order.id === order_id)
-    }
-    
+    },
+    getProducts: state =>{
+        return state.products;
+    },
+    getAmountProducts: state => {
+        return state.products.length;
+    }    
 }

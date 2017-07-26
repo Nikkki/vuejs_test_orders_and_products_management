@@ -20,10 +20,10 @@
             <div class="product__item" :key="product.id" v-for="product in filteredProducts">
     
                 <span class="product__is-work-sign" :class="isWorkClass(product.isWork)">
-                    <icon name="circle"></icon>
+                    <icon name="circle" class="fa-icon-circle"></icon>
                 </span>
                 <span class="product__img">
-                    <slot name="product-img"></slot>
+                    <img src="dist/img/monitor.png">
                 </span>
                 <div class="product-title">
                     <span class="product__name">
@@ -200,7 +200,7 @@ export default {
     },
 
     components: {
-        'icon': Icon
+        Icon
     }
 }
 </script>
@@ -253,16 +253,12 @@ export default {
 }
 
 .products-filter__option {
-    /* padding: 3px; */
     font: 14px Arial, sans-serif;
 }
 
-
-
-
-
-
 /* END FILTERS */
+
+
 
 .product__item {
     min-height: 60px;
@@ -290,6 +286,20 @@ export default {
 .product__is-work-sign {
     width: 20px;
     margin-left: 20px;
+}
+
+.fa-icon-circle{
+    width: 10px;
+}
+
+.product__img{
+    width: 100px;
+    margin-left: 28px;
+}
+
+.product__img img{
+    width: 65px;
+
 }
 
 .product-title {

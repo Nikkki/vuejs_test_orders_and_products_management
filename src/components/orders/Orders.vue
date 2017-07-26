@@ -262,7 +262,7 @@ export default {
     },
     components: {
         'app-modal': Modal,
-        'icon': Icon,
+        Icon,
         'app-order-products': OrderProducts
     }
 }

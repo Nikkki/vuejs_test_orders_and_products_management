@@ -126,8 +126,8 @@ export const store = new Vuex.Store({
                     end: '2017-06-29 12:09:33'
                 },
                 price: [
-                    { value: 100, symbol: 'USD', isDefault: 0 },
-                    { value: 2600, symbol: 'UAH', isDefault: 1 }
+                    { value: 200, symbol: 'USD', isDefault: 0 },
+                    { value: 2000, symbol: 'UAH', isDefault: 1 }
                 ],
                 order: 2,
                 date: '2017-06-29 12:09:33'
@@ -146,8 +146,8 @@ export const store = new Vuex.Store({
                     end: '2017-06-29 12:09:33'
                 },
                 price: [
-                    { value: 100, symbol: 'USD', isDefault: 0 },
-                    { value: 2600, symbol: 'UAH', isDefault: 1 }
+                    { value: 0, symbol: 'USD', isDefault: 0 },
+                    { value: 1340, symbol: 'UAH', isDefault: 1 }
                 ],
                 order: 2,
                 date: '2017-06-29 12:09:33'

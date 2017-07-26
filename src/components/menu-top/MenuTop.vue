@@ -1,10 +1,11 @@
 <template>
 	<div class="menu-top">
         <div class="wrap">
-			<div class="menu-top_logo">
-				<p> inventory </p>
+			<div class="menu-top__logo">
+				<img class="menu-top-logo__icon" src="dist/img/user_shield.png" > 
+				<p>  inventory </p>
 			</div>
-			<div class="menu-top_search">
+			<div class="menu-top__search">
 				<input type="text" placeholder="Поиск">
 			</div>
 
@@ -65,16 +66,25 @@
 		justify-content: space-between;
 	}
 
-	.menu-top_logo{
+	.menu-top__logo{
 		font: 13px Arial, sans-serif;
 		font-weight: bold;
 		color: #91BE66;
 		text-transform: uppercase;
 		display: block;
 		float: left;
+		display: flex;
+		align-items: center;
+	}
+
+	.menu-top-logo__icon{
+		height: 45px;
+		width: 45px;
+		opacity: .8;
+		margin-right: 10px;
 	}
 		
-	.menu-top_search input{
+	.menu-top__search input{
 		max-width: 412px;
 		min-width: 300px;
 		height: 24px;
@@ -97,11 +107,11 @@
 		
 		
 	}
-	.menu-top_search input:focus{
+	.menu-top__search input:focus{
 		outline: 0;
 	}
-	.menu-top_search input::-webkit-input-placeholder,
-	.menu-top_search input::-moz-input-placeholder{
+	.menu-top__search input::-webkit-input-placeholder,
+	.menu-top__search input::-moz-input-placeholder{
 		color: #000;
 	}
 

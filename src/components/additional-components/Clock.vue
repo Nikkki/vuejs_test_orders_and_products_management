@@ -6,14 +6,17 @@
 		<div>
 		</div>
 		<div>
-			<p>{{ day }} {{ month }}, {{ year }}  {{ hours }}:{{ minutes }}</p>
+			<p>{{ day }} {{ month }}, {{ year }}
+				<span class="clock__icon"><icon  name="clock-o"></icon></span> {{ hours }}:{{ minutes }}</p>
 		</div>
 	
 	</div>
 </template>
 
 <script>
+import Icon from 'vue-awesome/components/Icon.vue';
 
+import 'vue-awesome/icons/clock-o';
 export default {
 
 	data() {
@@ -44,7 +47,21 @@ export default {
 			this.month = month_arr[now.getMonth()];
 			this.year = now.getYear() + 1900;
 		}
-
+	},
+	components: {
+		Icon
 	}
 }
 </script>
+
+<style scoped>
+	.clock__icon{
+		position: relative;
+		margin: 0 3px 0 13px;
+		top: 3px;
+		color: #91BE66;
+	}
+	p {
+		margin: 3px 0;
+	}
+</style>

@@ -42,8 +42,8 @@ export default {
     }
     body{
         margin: 0;
+        width: 100%;s
         height: 100%;
-
     }
     #app {
     margin: 0;

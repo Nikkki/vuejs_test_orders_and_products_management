@@ -57,15 +57,15 @@
                 </span>
                 <!-- СО СЛЕДУЮЩИМИ ПАРАМЕТРАМИ ПОЛУЧАЕТСЯ БЕСКОНЕЧНЫЙ ЦИКЛ И НЕ ПОНЯТНО ПОЧЕМУ,
                 МОЖЕТ ВОТЧЕР ЗАЦИКЛИВАЕТСЯ ЧТО ЛИ   -->
-                 <!-- <span class="order-name" >
+                  <span class="order-name" >
                     {{getOrder(product.order).title}}
-                </span>  -->
+                </span>  
     
-                 <!-- <span class="order__date">
+                 <span class="order__date">
                     <span class="order__date_short"> {{ getDate(getOrder(product.order).date) }} / {{getMonth(getOrder(product.order).date)}} </span>
                     <span class="order__date_long"> {{ getDate(getOrder(product.order).date) }} / {{getMonthName(getOrder(product.order).date)}} / {{getYear(getOrder(product.order).date)}}</span>
-                </span>  -->
-    
+                </span>  
+                <!-- ////////   -->
                 <button class="trash-btn">
                     <icon name="trash"></icon>
                 </button>

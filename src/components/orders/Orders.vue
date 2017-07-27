@@ -78,11 +78,11 @@
                             </span>
                         </transition>
 
-                        <transition name="order-active-arrow">
+                        <!-- <transition name="order-active-arrow">
                             <span class="orders__active-arrow" v-if="showOrderProductsBoolean">
                                 <icon name="chevron-right"></icon>
                             </span>
-                        </transition>
+                        </transition> -->
     
                     </div>
                 </transition-group>
@@ -425,7 +425,7 @@ export default {
     cursor: pointer;
 }
 
-.orders__active-arrow{
+/* .orders__active-arrow{
     position: absolute;
     color: #fff;
     height: 70px;
@@ -449,7 +449,7 @@ export default {
 .order-active-arrow-leave-to,
 .order-active-arrow-enter{
     right: -40px;
-}
+} */
 
 
 

@@ -28,5 +28,8 @@ export default {
     },
     getAmountProducts: state => {
         return state.products.length;
+    },
+    getSelectedOrderProducts: state => {
+        return state.selected_order_products;
     }
 };

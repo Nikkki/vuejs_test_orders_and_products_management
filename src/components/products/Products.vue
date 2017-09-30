@@ -211,7 +211,7 @@ export default {
 </script>
     
 <style  scoped>
-@media only screen and (min-width: 1137px) {
+@media only screen and (min-width: 1100px) {
     .products {
     width: 920px;        
     }

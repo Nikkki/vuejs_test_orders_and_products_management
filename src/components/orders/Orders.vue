@@ -234,6 +234,7 @@ export default {
         deleteProductAsync(product){
             let index = this.selected_order_with_products.indexOf(product);
             this.$store.dispatch('deleteProduct', product.id);
+            console.log(this.selected_order_with_products);
             this.selected_order_with_products.splice(index, 1);
         }
 

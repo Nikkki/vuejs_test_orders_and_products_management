@@ -7,7 +7,7 @@
             <span class="products__filter">
                 <span class="products-filter__name">Тип:</span>
                 <select v-model="selected_filter_option" class="products-filter__select">
-                    <option class="products-filter__option" v-for="option in prod_filter_option" v-bind:value="option.value">
+                    <option class="products-filter__option" :key="option.id" v-for="option in prod_filter_option" v-bind:value="option.value">
                         {{ option.text }}
                     </option>
                 </select>
@@ -16,7 +16,6 @@
         </div>
         <!-- END HEADER  -->
         <div class="products">
-    
             <div class="product__item" :key="product.id" v-for="product in filteredProducts">
     
                 <span class="product__is-work-sign" :class="isWorkClass(product.isWork)">
@@ -110,9 +109,10 @@ export default {
 
             selected_filter_option: 'All',
             prod_filter_option: [
-                { text: 'Все', value: 'All' },
-                { text: 'Мониторы', value: 'Monitors' }
-            ]
+                { text: 'Все', value: 'All', id:  Math.random()},
+                { text: 'Мониторы', value: 'Monitors', id: Math.random()}
+            ],
+            orders: []
         }
 
     },
@@ -141,25 +141,29 @@ export default {
         },
 
         isWorkClass(work_status) {
-            if (work_status === 'free') {
-                return this.work_status.is_free.className;
-            } else if (work_status === 'under_repair') {
-                return this.work_status.under_repair.className;
-            } else if (work_status === 'is_work') {
-                return this.work_status.is_work.className;
-            } else {
-                return this.work_status.unknown.className;
+            let workStatus = this.work_status;
+            switch (work_status) {
+                case 'free':
+                    return workStatus.is_free.className;                    
+                case 'under_repair':
+                    return workStatus.under_repair.className;
+                case 'is_work':
+                    return workStatus.is_work.className;
+                default:
+                    return workStatus.unknown.className;
             }
         },
         workName(work_status) {
-            if (work_status === 'free') {
-                return this.work_status.is_free.name;
-            } else if (work_status === 'under_repair') {
-                return this.work_status.under_repair.name;
-            } else if (work_status === 'is_work') {
-                return this.work_status.is_work.name;
-            } else {
-                return this.work_status.unknown.name;
+            let workStatus = this.work_status;
+            switch (work_status) {
+                case 'free':
+                    return workStatus.is_free.name;                    
+                case 'under_repair':
+                    return workStatus.under_repair.name;
+                case 'is_work':
+                    return workStatus.is_work.name;
+                default:
+                    return workStatus.unknown.name;
             }
         },
 
@@ -167,7 +171,7 @@ export default {
             if(this.selected_order.id === order_id){
                 return this.selected_order;
             };
-            this.getOrders.forEach(order => {
+            this.orders.forEach(order => {
                 if(order.id === order_id){
                     this.selected_order = order;
                     return order;
@@ -178,9 +182,6 @@ export default {
     },
 
     computed: {
-        getOrders: function(){
-            return this.$store.getters.getOrders;
-        },
         getAmountProducts: function () {
             return this.$store.getters.getAmountProducts
         },
@@ -198,7 +199,11 @@ export default {
         }
 
     },
-
+    beforeCreate() {
+        this.orders = () => {
+            return this.$store.getters.getOrders;
+        }
+    },
     components: {
         Icon
     }
@@ -206,10 +211,14 @@ export default {
 </script>
     
 <style  scoped>
+@media only screen and (min-width: 1137px) {
+    .products {
+    width: 920px;        
+    }
+}
 .products {
     display: block;
     margin: 58px 0 0 263px;
-    width: 920px;
     overflow-x: scroll;
 }
 

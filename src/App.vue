@@ -42,7 +42,7 @@ export default {
     }
     body{
         margin: 0;
-        width: 100%;s
+        width: 100%;
         height: 100%;
     }
     #app {

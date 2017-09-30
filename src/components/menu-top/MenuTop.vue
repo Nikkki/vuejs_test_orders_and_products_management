@@ -4,6 +4,7 @@
 			<div class="menu-top__logo">
 				<img class="menu-top-logo__icon" src="dist/img/user_shield.png" > 
 				<p>  inventory </p>
+				
 			</div>
 			<div class="menu-top__search">
 				<input type="text" placeholder="Поиск">
@@ -19,17 +20,12 @@
 
 <script>
 	import Clock from '../additional-components/Clock.vue';
-		
 	export default {
-		
-
 		data() {
 			return {
 
 			}
 		},
-
-
 		methods: {
 
 		},	

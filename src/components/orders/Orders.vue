@@ -1,5 +1,3 @@
-
-
 <template>
     <div>
         <!-- MODAL WINDOW  -->
@@ -7,13 +5,13 @@
             <div slot="header">
                 <p>Вы уверенны, что хотите удалить этот приход?</p>
             </div>
-    
+
             <div slot="body">
                 <p>
                     {{ selected_order.title }}
                 </p>
             </div>
-    
+
             <div slot="footer">
                 <button class="modal-default-button" @click="showModal = false">
                     Отмена
@@ -21,43 +19,49 @@
                 <button class="modal-default-button" @click="deleteOrderAsync(selected_order)">
                     <icon name="trash"></icon> Удалить
                 </button>
-    
+
             </div>
         </app-modal>
         <!-- -MODAL-WINDOW-END-->
-    
+
         <!--  -->
-    
+
         <!--  -->
-    
+
         <main class="orders">
             <div class="orders__title">
                 <span class="orders__add">&#43;</span>
                 <span class="orders__amount">Приходы / {{ amountOfOrders }}</span>
             </div>
-    
+
             <div class="b-order-product">
-                                
-            <!-- 
-                Список приходов 
-                -->
-                
-                <transition-group name="slide-fade2" tag="div"> <!-- Анимация списка заказов --> 
+
+                <!-- 
+                        Список приходов 
+                        -->
+
+                <transition-group name="slide-fade2" tag="div">
+                    <!-- Анимация списка заказов -->
                     <div class="order__item" v-for="order in orders" v-bind:key="order.id">
-    
+
                         <transition name="slide-fade">
                             <span v-if="!showOrderProductsBoolean" class="order-item__title"> {{ order.title }} </span>
                         </transition>
-    
-                        <span class="order-item__prod-btn" @click="showOrderProducts(order)">
-                            <icon name="list-ul"></icon>
-                        </span>
-    
+                        <div>
+                            <span v-show="order.id !== selected_order_id" class="order-item__prod-btn" @click="showOrderProducts(order)">
+                                <icon name="list-ul"></icon>
+                            </span>
+                            <!-- показывает, когда у нас -->
+                            <span v-show="order.id === selected_order_id" class="order-item__prod-btn" @click="closeProductsBtn">
+                                <icon name="list-ul"></icon>
+                            </span>
+                        </div>
+
                         <span class="order-item-amount">
                             <span class="order-item-amount__amount"> {{ getOrderProducts[order.id].length }} </span>
                             <span class="order-item-amount__name"> {{ correctCase(correctCase_product, getOrderProducts[order.id].length) }} </span>
                         </span>
-    
+
                         <span class="order__date">
                             <span class="order__date_short"> {{ getDate(order.date) }} / {{getMonth(order.date)}} </span>
                             <span class="order__date_long"> {{ getDate(order.date) }} / {{getMonthName(order.date)}} / {{getYear(order.date)}}</span>
@@ -78,51 +82,48 @@
                             </span>
                         </transition>
 
-                        <!-- <transition name="order-active-arrow">
-                            <span class="orders__active-arrow" v-if="showOrderProductsBoolean">
+                        <transition name="order-active-arrow">
+                            <span class="orders__active-arrow" v-if="showOrderProductsBoolean && order.id === selected_order_id">
                                 <icon name="chevron-right"></icon>
                             </span>
-                        </transition> -->
-    
+                        </transition>
                     </div>
                 </transition-group>
                 <!-- КОНЕЦ Список приходов -->
 
                 <!-- 
-                    Список продуктов 
-                    -->
+                            Список продуктов 
+                            -->
                 <transition name="slide-products">
                     <div v-if="showOrderProductsBoolean" class="order-products">
                         <!-- 
-                            Header списка продуктов  
-                            -->
+                                    Header списка продуктов  
+                                    -->
                         <button class="close-btn" @click="closeProductsBtn">
                             <icon name="close"></icon>
                         </button>
                         <header>
                             <h3 class="header__title">{{ this.selected_order.title }}</h3>
-        
+
                             <div class="header__add-product">
                                 <span class="header__add-sign">&#43;</span>
                                 <i class="header__add-text">Добавить продукт</i>
                             </div>
                         </header>
                         <!-- КОНЕЦ Header списка продуктов    -->
-                        
-                        
-                        <app-order-products v-for="product in this.selected_order_with_products" v-bind:key="product.id"
-                        @closeBtn="closeProductsBtn" 
-                        v-bind:productName="product.title" 
-                        v-bind:productSpecification="product.specification"
-                        v-bind:isWork="product.isWork"
-                        >
+
+                        <app-order-products v-for="product in this.selected_order_with_products"
+                            :key="product.id"
+                            @closeBtn="closeProductsBtn"
+                            @deleteProduct="deleteProductAsync(product)"
+                            :product="product">
                         </app-order-products>
                     </div>
                 </transition>
-                
-                    <!-- Список продуктов КОНЕЦ-->
+
+                <!-- Список продуктов КОНЕЦ-->
             </div>
-    
+
         </main>
     </div>
 </template>
@@ -147,7 +148,7 @@ export default {
             month_arr: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
             orders: this.$store.state.orders,
             correctCase_product: ['Продукт', 'Продукта', 'Продуктов'],
-            order_id: 0,
+            selected_order_id: 0,
             showModal: false,
             showOrderProductsBoolean: false,
             selected_order: {},
@@ -174,9 +175,9 @@ export default {
                 cost = 0,
                 symbol_lowerCase = symbol;
 
-            products.forEach(function (product) {
+            products.forEach(function(product) {
                 //подсчет суммы в конкретной валюте 
-                product.price.forEach(function (each_price) { //each_price  -- obj
+                product.price.forEach(function(each_price) { //each_price  -- obj
                     if (each_price.symbol == symbol) {
                         cost = each_price.value + cost;
                     }
@@ -187,6 +188,7 @@ export default {
 
         closeProductsBtn() {
             this.showOrderProductsBoolean = false;
+            this.selected_order_id = '';
         },
 
         // Правильный падеж
@@ -207,8 +209,8 @@ export default {
             this.deleteProductByOrderId(order.id);
             this.showModal = false;
         },
-        deleteProductByOrderId(order_id){
-            this.$store.dispatch('deleteProductsByOrderId',order_id);
+        deleteProductByOrderId(order_id) {
+            this.$store.dispatch('deleteProductsByOrderId', order_id);
         },
         clickDeleteBtn(order) {
             this.selected_order = order;
@@ -218,7 +220,7 @@ export default {
         showOrderProducts(order) {
             let orderProducts = this.getOrderProducts,
                 id = order.id;
-            this.order_id = id;
+            this.selected_order_id = id;
             if (!this.showOrderProductsBoolean) {
                 // меняем эту переменную, чтобы блок с прихода сузился
                 this.showOrderProductsBoolean = true;
@@ -229,7 +231,11 @@ export default {
                 return orderProducts[id];
             }
         },
-
+        deleteProductAsync(product){
+            let index = this.selected_order_with_products.indexOf(product);
+            this.$store.dispatch('deleteProduct', product.id);
+            this.selected_order_with_products.splice(index, 1);
+        }
 
         //-----EVENTS--END-----
     },
@@ -242,7 +248,7 @@ export default {
         }
     },
     watch: {
-        showOrderProductsBoolean: function (value) {
+        showOrderProductsBoolean: function(value) {
             let order_items = document.getElementsByClassName("order__item");
             //setTimeout нужен для анимации
             setTimeout(() => {
@@ -319,6 +325,8 @@ export default {
 }
 
 
+
+
 /*----Order styles----*/
 
 .order__item {
@@ -341,6 +349,7 @@ export default {
 
 .order__item:hover {
     z-index: 5;
+    transform: translateY(-2px);
     box-shadow: 10px 10px 30px 5px rgba(222, 227, 231, .7);
 }
 
@@ -417,18 +426,27 @@ export default {
 }
 
 .order-item__btn-delete {
+    margin-left: 12px;
     width: 10px;
-    margin-left: 10px;
 }
 
 .order-item__btn-delete:hover {
     cursor: pointer;
 }
 
-/* .orders__active-arrow{
+.order-item__btn-delete svg {
+    transition: all .3s;
+}
+
+
+.order-item__btn-delete:hover svg {
+    fill: #fd4f4f;
+}
+
+.orders__active-arrow {
     position: absolute;
     color: #fff;
-    height: 70px;
+    height: 100%;
     width: 40px;
     right: 0px;
     line-height: 75px;
@@ -436,20 +454,25 @@ export default {
     background-color: #cfd8dc;
 }
 
-.order-active-arrow-enter-active{
-    transition: all .3s ease-out .45s;
+.order-active-arrow-enter-active {
+    transition: all .3s ease-out .25s;
 }
-.order-active-arrow-leave-active{
+
+.order-active-arrow-leave-active {
     transition: all .3s ease-out;
 }
+
 .order-active-arrow-leave,
-.order-active-arrow-enter-to{
+.order-active-arrow-enter-to {
     right: 0;
 }
+
 .order-active-arrow-leave-to,
-.order-active-arrow-enter{
+.order-active-arrow-enter {
     right: -40px;
-} */
+}
+
+
 
 
 
@@ -484,6 +507,8 @@ export default {
 
 
 
+
+
 /*END  Animation order`s info */
 
 
@@ -500,6 +525,8 @@ export default {
 .slide-fade2-leave-to {
     transform: scaleY(0);
 }
+
+
 
 
 
@@ -559,14 +586,20 @@ header {
     font: 12px Arial, sans-serif;
 }
 
+
+
 /*  ------END---PRODUCTS-----  */
-.slide-products-enter-active{
+
+.slide-products-enter-active {
     transition: all .3s ease-out .3s;
     display: none;
 }
+
+
+
 /*  */
+
 .slide-products-leave {
     display: none;
 }
-
 </style>

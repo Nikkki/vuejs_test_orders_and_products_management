@@ -14,21 +14,18 @@ export const store = new Vuex.Store({
                 title: 'Ну очень длинющее название прихода, что аж не влазит в одну строчку, настолько длинное, что заняло аж 3 строки, да нет же, похоже и 3-ох строк мало',
                 date: '2017-06-29 12:09:33',
                 description: 'desc'
-                //get products() { return this.products }
             },
             {
                 id: 2,
                 title: 'Order 2',
                 date: '2017-06-29 12:09:33',
                 description: 'desc'
-                //get products() { return this.products }
             },
             {
                 id: 5,
                 title: 'Order 3',
                 date: '2017-06-29 12:09:33',
                 description: 'desc'
-                //get products() { return this.products }
             }
         ],
         products: [
@@ -152,7 +149,8 @@ export const store = new Vuex.Store({
                 order: 2,
                 date: '2017-06-29 12:09:33'
             }
-        ]
+        ],
+        selected_order_products: []
     },
     getters,
     actions,

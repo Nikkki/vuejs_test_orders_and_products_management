@@ -1,11 +1,11 @@
 <template>
 	<div class="clock">
-		<div class="clock-day">
+		<div class="clock-day" v-cloak>
 			<p>{{ dayName }}</p>
 		</div>
 		<div>
 		</div>
-		<div>
+		<div >
 			<p>{{ day }} {{ month }}, {{ year }}
 				<span class="clock__icon"><icon  name="clock-o"></icon></span> {{ hours }}:{{ minutes }}</p>
 		</div>

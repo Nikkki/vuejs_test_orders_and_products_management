@@ -4,6 +4,15 @@ export default {
         state.orders.forEach((order, i, ord_arr) => {
             if (order.id === order_id) {
                 ord_arr.splice(i, 1);
+                return;
+            }
+        });
+    },
+    deleteProduct: (state, product_id) => {
+        state.products.forEach((product, i, products_arr) => {
+            if (product.id === product_id) {
+                products_arr.splice(i, 1);
+                return;
             }
         });
     },
@@ -14,6 +23,6 @@ export default {
                     state.products.splice(i, 1);
                     i--;
                 }
-        };
+        }
     }
-}
+};

@@ -65,7 +65,6 @@ import 'vue-awesome/icons/circle';
 export default {
     data: function() {
         return {
-
             work_status: {
                 is_work: {
                     className: 'is_work',
@@ -126,7 +125,7 @@ export default {
         'product'
     ],
     components: {
-        'icon': Icon,
+        Icon,
         'app-modal': Modal,
     }
 }

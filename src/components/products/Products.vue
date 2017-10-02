@@ -1,5 +1,28 @@
 <template>
     <div>
+        <!-- MODAL WINDOW  -->
+        <app-modal v-if="showDeleteProductModal">
+            <div slot="header">
+                <p>Вы уверенны, что хотите удалить этот продукт?</p>
+            </div>
+
+            <div slot="body">
+                <p>
+                    {{ selected_product.title }}
+                </p>
+            </div>
+
+            <div slot="footer">
+                <button class="modal-default-button" @click="showDeleteProductModal = false">
+                    Отмена
+                </button>
+                <button class="modal-default-button" @click="deleteProductAsync">
+                    <icon name="trash"></icon> Удалить
+                </button>
+
+            </div>
+        </app-modal>
+        <!-- -MODAL-WINDOW-END-->
         <!--HEADER  -->
         <div class="products__header">
             <span class="products__amount">Продукты / {{ filteredProducts.length }}</span>
@@ -7,7 +30,7 @@
             <span class="products__filter">
                 <span class="products-filter__name">Тип:</span>
                 <select v-model="selected_filter_option" class="products-filter__select">
-                    <option class="products-filter__option" :key="option.id" v-for="option in prod_filter_option" v-bind:value="option.value">
+                    <option class="products-filter__option" :key="option.id" v-for="option in prod_filter_option" :value="option.value">
                         {{ option.text }}
                     </option>
                 </select>
@@ -16,66 +39,69 @@
         </div>
         <!-- END HEADER  -->
         <div class="products">
-            <div class="product__item" :key="product.id" v-for="product in filteredProducts">
-    
-                <span class="product__is-work-sign" :class="isWorkClass(product.isWork)">
-                    <icon name="circle" class="fa-icon-circle"></icon>
-                </span>
-                <span class="product__img">
-                    <img src="dist/img/monitor.png">
-                </span>
-                <div class="product-title">
-                    <span class="product__name">
-                        {{product.title}}
+            <transition-group name="product-group" tag="ul" >
+                <li class="product__item" :key="product.id" v-for="product in filteredProducts">
+                    <span class="product__is-work-sign" :class="isWorkClass(product.isWork)">
+                        <icon name="circle" class="fa-icon-circle"></icon>
                     </span>
-                    <span class="product__specification">
-                        {{ product.specification }}
+                    <span class="product__img">
+                        <img src="dist/img/monitor.png">
                     </span>
-                </div>
-                <span class="product__is-work-name" :class="isWorkClass(product.isWork)">
-                    {{ workName(product.isWork) }}
-                </span>
-                <div class="product-guarantee">
-                    <span class="product-guarantee__start">
-                        c {{ getDate(product.guarantee.start) }} / {{ getMonth(product.guarantee.start) }} / {{ getYear(product.guarantee.start) }}
+                    <div class="product-title">
+                        <span class="product__name">
+                            {{product.title}}
+                        </span>
+                        <span class="product__specification">
+                            {{ product.specification }}
+                        </span>
+                    </div>
+                    <span class="product__is-work-name" :class="isWorkClass(product.isWork)">
+                        {{ workName(product.isWork) }}
                     </span>
-                    <span class="product-guarantee__end">
-                        по {{ getDate(product.guarantee.end) }} / {{ getMonth(product.guarantee.end) }} / {{ getYear(product.guarantee.end) }}
+                    <div class="product-guarantee">
+                        <span class="product-guarantee__start">
+                            c {{ getDate(product.guarantee.start) }} / {{ getMonth(product.guarantee.start) }} / {{ getYear(product.guarantee.start) }}
+                        </span>
+                        <span class="product-guarantee__end">
+                            по {{ getDate(product.guarantee.end) }} / {{ getMonth(product.guarantee.end) }} / {{ getYear(product.guarantee.end) }}
+                        </span>
+                    </div>
+                    <div class="product-novelty">
+                        {{ productNovelty(product.isNew) }}
+                    </div>
+                    <span class="products__cost">
+                        <span class="products__cost_usd">
+                            {{ product.price[0].value }} &#36;
+                        </span>
+                        <span class="products__cost_uah">
+                            {{ product.price[1].value }} uah
+                        </span>
                     </span>
-                </div>
-                <div class="product-novelty">
-                    {{ productNovelty(product.isNew) }}
-                </div>
-                <span class="products__cost">
-                    <span class="products__cost_usd">
-                        {{ product.price[0].value }} &#36;
+                    <!-- СО СЛЕДУЮЩИМИ ПАРАМЕТРАМИ ПОЛУЧАЕТСЯ БЕСКОНЕЧНЫЙ ЦИКЛ И НЕ ПОНЯТНО ПОЧЕМУ,
+                                МОЖЕТ ВОТЧЕР ЗАЦИКЛИВАЕТСЯ ЧТО ЛИ   -->
+                    <span class="order-name">
+                        {{getOrder(product.order).title}}
                     </span>
-                    <span class="products__cost_uah">
-                        {{ product.price[1].value }} uah
+
+                    <span class="order__date">
+                        <span class="order__date_short"> {{ getDate(getOrder(product.order).date) }} / {{getMonth(getOrder(product.order).date)}} </span>
+                        <span class="order__date_long"> {{ getDate(getOrder(product.order).date) }} / {{getMonthName(getOrder(product.order).date)}} / {{getYear(getOrder(product.order).date)}}</span>
                     </span>
-                </span>
-                <!-- СО СЛЕДУЮЩИМИ ПАРАМЕТРАМИ ПОЛУЧАЕТСЯ БЕСКОНЕЧНЫЙ ЦИКЛ И НЕ ПОНЯТНО ПОЧЕМУ,
-                МОЖЕТ ВОТЧЕР ЗАЦИКЛИВАЕТСЯ ЧТО ЛИ   -->
-                  <span class="order-name" >
-                    {{getOrder(product.order).title}}
-                </span>  
-    
-                 <span class="order__date">
-                    <span class="order__date_short"> {{ getDate(getOrder(product.order).date) }} / {{getMonth(getOrder(product.order).date)}} </span>
-                    <span class="order__date_long"> {{ getDate(getOrder(product.order).date) }} / {{getMonthName(getOrder(product.order).date)}} / {{getYear(getOrder(product.order).date)}}</span>
-                </span>  
-                <!-- ////////   -->
-                <button class="trash-btn">
-                    <icon name="trash"></icon>
-                </button>
-    
-            </div>
+                    <!-- ////////   -->
+                    <span class="trash-btn" @click="clickDeleteProductBtn(product)">
+                        <icon name="trash"></icon>
+                    </span>
+
+                </li>
+            </transition-group>
+
         </div>
     </div>
 </template>
 
 <script>
 import Icon from 'vue-awesome/components/Icon.vue';
+import Modal from '../additional-components/Modal.vue';
 
 import 'vue-awesome/icons/circle';
 import 'vue-awesome/icons/trash';
@@ -87,6 +113,7 @@ export default {
         return {
             products: this.$store.getters.getProducts,
             selected_order: {},
+            selected_product: {},
             month_arr: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
             work_status: {
                 is_work: {
@@ -109,10 +136,12 @@ export default {
 
             selected_filter_option: 'All',
             prod_filter_option: [
-                { text: 'Все', value: 'All', id:  Math.random()},
-                { text: 'Мониторы', value: 'Monitors', id: Math.random()}
+                { text: 'Все', value: 'All', id: Math.random() },
+                { text: 'Мониторы', value: 'Monitors', id: Math.random() }
             ],
-            orders: []
+            orders: [],
+            showDeleteProductModal: false
+
         }
 
     },
@@ -144,7 +173,7 @@ export default {
             let workStatus = this.work_status;
             switch (work_status) {
                 case 'free':
-                    return workStatus.is_free.className;                    
+                    return workStatus.is_free.className;
                 case 'under_repair':
                     return workStatus.under_repair.className;
                 case 'is_work':
@@ -157,7 +186,7 @@ export default {
             let workStatus = this.work_status;
             switch (work_status) {
                 case 'free':
-                    return workStatus.is_free.name;                    
+                    return workStatus.is_free.name;
                 case 'under_repair':
                     return workStatus.under_repair.name;
                 case 'is_work':
@@ -168,27 +197,36 @@ export default {
         },
 
         getOrder(order_id) {
-            if(this.selected_order.id === order_id){
+            if (this.selected_order.id === order_id) {
                 return this.selected_order;
             };
             this.orders.forEach(order => {
-                if(order.id === order_id){
+                if (order.id === order_id) {
                     this.selected_order = order;
                     return order;
-                }  
+                }
             });
-             return this.selected_order;
-        }
+            return this.selected_order;
+        },
+        clickDeleteProductBtn(product) {
+            this.selected_product = product;
+            this.showDeleteProductModal = true;
+        },
+        deleteProductAsync() {
+            console.log(this.selected_product);
+            this.$store.dispatch('deleteProduct', this.selected_product.id);
+            this.showDeleteProductModal = false;
+        },
     },
 
     computed: {
-        getAmountProducts: function () {
+        getAmountProducts: function() {
             return this.$store.getters.getAmountProducts
         },
         // Функция фильтрации продуктов по типу продукта
-        filteredProducts: function () {
+        filteredProducts: function() {
             let select_filter = this.selected_filter_option;
-            return this.products.filter(function (product) {
+            return this.products.filter(function(product) {
                 if (select_filter === 'All') {
                     return product
                 }
@@ -205,7 +243,8 @@ export default {
         }
     },
     components: {
-        Icon
+        Icon,
+        'app-modal': Modal,
     }
 }
 </script>
@@ -213,9 +252,10 @@ export default {
 <style  scoped>
 @media only screen and (min-width: 1100px) {
     .products {
-    width: 920px;        
+        width: 920px;
     }
 }
+
 .products {
     display: block;
     margin: 58px 0 0 263px;
@@ -234,8 +274,30 @@ export default {
     letter-spacing: 1px;
     margin: 0 0 0 10px;
 }
+/*-------PRODUCT AMIMATION--------*/
+.product-group-leave-active {
+    transition: all 3s ease-out;
+    position: absolute;
+} 
 
+.product-group-leave {
+    transform: scaleY(1);
+    position: absolute;
+    
+    opacity: 1;
+}
 
+.product-group-leave-to {
+
+    position: absolute;
+    transform: scaleY(0);
+    opacity: 0;
+}
+
+.product-group-move{
+    transition: transform .3s;
+}
+/*----END---PRODUCT AMIMATION--------*/
 
 
 
@@ -265,9 +327,11 @@ export default {
     font: 14px Arial, sans-serif;
 }
 
+
+
+
+
 /* END FILTERS */
-
-
 
 .product__item {
     min-height: 60px;
@@ -284,6 +348,7 @@ export default {
     color: #546e7a;
     margin-bottom: 10px;
     padding: 5px 15px;
+    position: relative;
     transition: all .2s ease-out;
 }
 
@@ -297,18 +362,17 @@ export default {
     margin-left: 20px;
 }
 
-.fa-icon-circle{
+.fa-icon-circle {
     width: 10px;
 }
 
-.product__img{
+.product__img {
     width: 100px;
     margin-left: 28px;
 }
 
-.product__img img{
+.product__img img {
     width: 65px;
-
 }
 
 .product-title {
@@ -374,6 +438,10 @@ export default {
 
 
 
+
+
+
+
 /* ORDER COST */
 
 .products__cost,
@@ -403,6 +471,25 @@ export default {
 .products__cost_usd {
     font-size: 13px;
     opacity: .7;
+}
+
+
+.trash-btn {
+    margin-left: 25px;
+    width: 10px;
+    color: #90a4ae;
+}
+
+.trash-btn:hover {
+    cursor: pointer;
+}
+
+.trash-btn svg {
+    transition: all .3s;
+}
+
+.trash-btn:hover svg {
+    fill: #fd4f4f;
 }
 
 

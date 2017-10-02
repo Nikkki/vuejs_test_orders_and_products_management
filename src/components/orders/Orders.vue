@@ -37,12 +37,12 @@
             <div class="b-order-product">
 
                 <!-- 
-                        Список приходов 
-                        -->
+                            Список приходов 
+                            -->
 
-                <transition-group name="slide-fade2" tag="div">
+                <transition-group name="slide-fade2" tag="ul">
                     <!-- Анимация списка заказов -->
-                    <div class="order__item" v-for="order in orders" v-bind:key="order.id">
+                    <li class="order__item" v-for="order in orders" :key="order.id">
 
                         <transition name="slide-fade">
                             <span v-if="!showOrderProductsBoolean" class="order-item__title"> {{ order.title }} </span>
@@ -87,18 +87,18 @@
                                 <icon name="chevron-right"></icon>
                             </span>
                         </transition>
-                    </div>
+                    </li>
                 </transition-group>
                 <!-- КОНЕЦ Список приходов -->
 
                 <!-- 
-                            Список продуктов 
-                            -->
+                                Список продуктов 
+                                -->
                 <transition name="slide-products">
                     <div v-if="showOrderProductsBoolean" class="order-products">
                         <!-- 
-                                    Header списка продуктов  
-                                    -->
+                                        Header списка продуктов  
+                                        -->
                         <button class="close-btn" @click="closeProductsBtn">
                             <icon name="close"></icon>
                         </button>
@@ -111,13 +111,15 @@
                             </div>
                         </header>
                         <!-- КОНЕЦ Header списка продуктов    -->
+                        <transition-group name="order-products" mode="out-in">
+                            <app-order-products v-for="product in this.selected_order_with_products" 
+                                :key="product.id"
+                                @closeBtn="closeProductsBtn"
+                                @deleteProduct="deleteProductAsync(product)"
+                                :product="product">
+                            </app-order-products>
+                        </transition-group>
 
-                        <app-order-products v-for="product in this.selected_order_with_products"
-                            :key="product.id"
-                            @closeBtn="closeProductsBtn"
-                            @deleteProduct="deleteProductAsync(product)"
-                            :product="product">
-                        </app-order-products>
                     </div>
                 </transition>
 
@@ -231,14 +233,16 @@ export default {
                 return orderProducts[id];
             }
         },
-        deleteProductAsync(product){
+        deleteProductAsync(product) {
             let index = this.selected_order_with_products.indexOf(product);
             this.$store.dispatch('deleteProduct', product.id);
             console.log(this.selected_order_with_products);
             this.selected_order_with_products.splice(index, 1);
         }
-
         //-----EVENTS--END-----
+
+        //------ANIMATION-------
+        //---END---ANIMATION----
     },
     computed: {
         amountOfOrders() {
@@ -321,9 +325,9 @@ export default {
 .b-order-product {
     display: flex;
     flex-direction: row;
-    width: 940px;
     align-items: baseline;
 }
+
 
 
 
@@ -439,7 +443,6 @@ export default {
     transition: all .3s;
 }
 
-
 .order-item__btn-delete:hover svg {
     fill: #fd4f4f;
 }
@@ -507,25 +510,34 @@ export default {
 
 
 
-
-
-
 /*END  Animation order`s info */
 
 
 /* Animation of order deleting */
 
+
+/* .slide-fade2-enter,
+.slide-fade2-enter-to
+{
+    transform: scaleY(1);
+} */
+
 .slide-fade2-leave-active {
     transition: all .3s ease-out;
+    position: absolute;
 }
 
 .slide-fade2-leave {
     transform: scaleY(1);
+    opacity: 1;
 }
 
 .slide-fade2-leave-to {
     transform: scaleY(0);
+    opacity: 0;
 }
+
+
 
 
 
@@ -545,6 +557,17 @@ export default {
     border: 1px solid #dfe3e6;
     position: relative;
 }
+
+/* .order-products-leave{
+    transform: scaleY(1);
+}
+.order-products-leave-to{
+    transform: scaleY(0);
+}
+.order-products-leave-active{
+    position: absolute;
+    transition: all .3s;
+} */
 
 .close-btn {
     outline: 0;
@@ -589,18 +612,21 @@ header {
 
 
 
+
 /*  ------END---PRODUCTS-----  */
-
+.slide-products-enter{
+    transform: translateX(-100px);
+    opacity: 0;
+}
+.slide-products-enter-to{
+    transform: translateX(0px);
+    opacity: 1;
+    
+}
 .slide-products-enter-active {
-    transition: all .3s ease-out .3s;
-    display: none;
+    z-index: 0;
+    transition: all .3s ease-out;
+    transition-delay: .3s;
 }
 
-
-
-/*  */
-
-.slide-products-leave {
-    display: none;
-}
 </style>

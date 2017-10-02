@@ -53,7 +53,7 @@ body {
     margin-top: -15px;
     display: block;
     width: 200px;
-    min-height: 100vh;
+    min-height: calc(100vh + 60px);
     height: 100%;
     background-color: #fff;
     -webkit-box-shadow: 8px 0 25px 5px rgba(222, 227, 231, .6);
